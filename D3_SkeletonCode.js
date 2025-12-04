@@ -29,17 +29,19 @@ class Repository {
   save(entity) {}
   findById(id) {}
 }
-
+// Allows us to add different types of repositories maybe in future such as database repository or cloud repository
 class LocalRepository extends Repository {
   save(entity) {}
   findById(id) {}
 }
 
-// --- Helper / Strategy Class ---
+// --- Helper / Strategy Class  ---
+// Needed if users wants to add different types of lists such as pantry list, shopping list or vegan shopping list
 class ShoppingListGenerator {
   generate(mealPlan) {}
 }
-
+// What we need is define a factory that will outline how to make a repository, then have specific implementations for each type of repository
+// classes would ask the factory for a repository rather than instantiating one directly
 // --- Service Layer ---
 class MealPlannerService {
   addRecipe(user, recipe) {}

@@ -1,0 +1,461 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Plan - Digital Recipe Book & Meal Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <span>Cooking Plan</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" data-page="dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="#" data-page="recipes"><i class="fas fa-book"></i> Recipes</a>
+                    <a href="#" data-page="meal-plan"><i class="fas fa-calendar-alt"></i> Meal Plan</a>
+                    <a href="#" data-page="shopping"><i class="fas fa-shopping-cart"></i> Shopping List</a>
+                    <a href="#" data-page="share"><i class="fas fa-share-alt"></i> Share</a>
+                </div>
+                <div class="user-menu">
+                    <span id="username">Guest</span>
+                    <button id="loginBtn" class="btn btn-outline">Login</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login / Register</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+                
+                <div id="loginTab" class="tab-content active">
+                    <input type="email" id="loginEmail" placeholder="Email">
+                    <input type="password" id="loginPassword" placeholder="Password">
+                    <button id="doLogin" class="btn btn-primary">Login</button>
+                </div>
+                
+                <div id="registerTab" class="tab-content">
+                    <input type="text" id="registerName" placeholder="Name">
+                    <input type="email" id="registerEmail" placeholder="Email">
+                    <input type="password" id="registerPassword" placeholder="Password">
+                    <button id="doRegister" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <div class="page-header">
+                <h1>Welcome to Cooking Plan</h1>
+                <p>Your digital recipe book and meal planner</p>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-book"></i>
+                    <h3 id="recipeCount">0</h3>
+                    <p>Recipes</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3 id="planCount">0</h3>
+                    <p>Meal Plans</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h3 id="avgRating">0.0</h3>
+                    <p>Avg Rating</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="sharedCount">0</h3>
+                    <p>Shared Plans</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <button class="action-btn" data-action="add-recipe">
+                        <i class="fas fa-plus"></i> Add New Recipe
+                    </button>
+                    <button class="action-btn" data-action="create-plan">
+                        <i class="fas fa-calendar-plus"></i> Create Meal Plan
+                    </button>
+                    <button class="action-btn" data-action="generate-list">
+                        <i class="fas fa-list-alt"></i> Generate Shopping List
+                    </button>
+                </div>
+                
+                <div class="recent-recipes">
+                    <h2>Recent Recipes</h2>
+                    <div id="recentRecipes" class="recipe-grid">
+                        <!-- Recipes will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipes Page -->
+        <div id="recipes" class="page">
+            <div class="page-header">
+                <h1>My Recipe Book</h1>
+                <div class="page-actions">
+                    <button id="addRecipeBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Recipe
+                    </button>
+                    <div class="search-box">
+                        <input type="text" id="recipeSearch" placeholder="Search recipes...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
+                <button class="filter-btn" data-filter="vegan">Vegan</button>
+                <button class="filter-btn" data-filter="gluten-free">Gluten-Free</button>
+                <button class="filter-btn" data-filter="high-rating">High Rating</button>
+            </div>
+            
+            <div id="recipesList" class="recipe-grid">
+                <!-- Recipes will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Meal Plan Page -->
+        <div id="meal-plan" class="page">
+            <div class="page-header">
+                <h1>Weekly Meal Plan</h1>
+                <div class="page-actions">
+                    <button id="createPlanBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create New Plan
+                    </button>
+                    <button id="sharePlanBtn" class="btn btn-secondary">
+                        <i class="fas fa-share"></i> Share Plan
+                    </button>
+                </div>
+            </div>
+            
+            <div class="week-calendar">
+                <div class="week-header">
+                    <button class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="currentWeek">Week of November 27, 2023</h2>
+                    <button class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="week-grid">
+                    <div class="day-card" data-day="monday">
+                        <h3>Monday</h3>
+                        <div class="day-content" id="mondayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="tuesday">
+                        <h3>Tuesday</h3>
+                        <div class="day-content" id="tuesdayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="wednesday">
+                        <h3>Wednesday</h3>
+                        <div class="day-content" id="wednesdayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="thursday">
+                        <h3>Thursday</h3>
+                        <div class="day-content" id="thursdayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="friday">
+                        <h3>Friday</h3>
+                        <div class="day-content" id="fridayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="saturday">
+                        <h3>Saturday</h3>
+                        <div class="day-content" id="saturdayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                    <div class="day-card" data-day="sunday">
+                        <h3>Sunday</h3>
+                        <div class="day-content" id="sundayMeal">
+                            <p class="empty-state">Drag recipe here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="available-recipes">
+                <h3>Available Recipes</h3>
+                <div id="dragRecipes" class="drag-recipes">
+                    <!-- Recipes for dragging will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping List Page -->
+        <div id="shopping" class="page">
+            <div class="page-header">
+                <h1>Shopping List</h1>
+                <div class="page-actions">
+                    <select id="listType">
+                        <option value="basic">Basic List</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="glutenFree">Gluten-Free</option>
+                    </select>
+                    <button id="generateListBtn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> Generate
+                    </button>
+                    <button id="printListBtn" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+            
+            <div class="shopping-list-container">
+                <div class="list-controls">
+                    <button class="list-btn" data-action="check-all">
+                        <i class="far fa-check-square"></i> Check All
+                    </button>
+                    <button class="list-btn" data-action="clear-all">
+                        <i class="far fa-square"></i> Clear All
+                    </button>
+                    <button class="list-btn" data-action="delete-checked">
+                        <i class="fas fa-trash"></i> Delete Checked
+                    </button>
+                </div>
+                
+                <div id="shoppingList" class="shopping-list">
+                    <!-- Shopping list items will be loaded here -->
+                    <div class="empty-list">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>No shopping list generated yet</p>
+                        <p>Generate a list from your meal plan</p>
+                    </div>
+                </div>
+                
+                <div class="list-summary">
+                    <p>Total Items: <span id="totalItems">0</span></p>
+                    <p>Estimated Cost: <span id="estimatedCost">$0.00</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Page -->
+        <div id="share" class="page">
+            <div class="page-header">
+                <h1>Share & Collaborate</h1>
+                <div class="page-actions">
+                    <button id="inviteBtn" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Invite Family Member
+                    </button>
+                </div>
+            </div>
+            
+            <div class="share-grid">
+                <div class="share-form">
+                    <h3>Share a Meal Plan</h3>
+                    <select id="planSelect">
+                        <option value="">Select a meal plan</option>
+                    </select>
+                    <input type="email" id="shareEmail" placeholder="Family member's email">
+                    <button id="sharePlanBtn" class="btn btn-primary">Share Plan</button>
+                    
+                    <h3>Shared With You</h3>
+                    <div id="sharedPlans" class="shared-list">
+                        <!-- Shared plans will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="family-members">
+                    <h3>Family Members</h3>
+                    <div id="familyList" class="family-list">
+                        <!-- Family members will be loaded here -->
+                    </div>
+                    
+                    <h3>Activity Feed</h3>
+                    <div id="activityFeed" class="activity-feed">
+                        <div class="activity-item">
+                            <i class="fas fa-share-alt"></i>
+                            <div>
+                                <p><strong>Alice</strong> shared a meal plan with you</p>
+                                <small>2 hours ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-utensils"></i>
+                            <div>
+                                <p><strong>Bob</strong> added a new recipe</p>
+                                <small>Yesterday</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Recipe Modal -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content recipe-modal">
+            <div class="modal-header">
+                <h2 id="recipeModalTitle">Add New Recipe</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="recipeForm">
+                    <input type="hidden" id="recipeId">
+                    
+                    <div class="form-group">
+                        <label for="recipeTitle">Recipe Title *</label>
+                        <input type="text" id="recipeTitle" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="recipeCategory">Category</label>
+                            <select id="recipeCategory">
+                                <option value="">Select category</option>
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="dessert">Dessert</option>
+                                <option value="snack">Snack</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipeTime">Prep Time (min)</label>
+                            <input type="number" id="recipeTime" min="1" value="30">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Dietary Tags</label>
+                        <div class="tag-selector">
+                            <label class="tag-option">
+                                <input type="checkbox" value="vegetarian"> Vegetarian
+                            </label>
+                            <label class="tag-option">
+                                <input type="checkbox" value="vegan"> Vegan
+                            </label>
+                            <label class="tag-option">
+                                <input type="checkbox" value="gluten-free"> Gluten-Free
+                            </label>
+                            <label class="tag-option">
+                                <input type="checkbox" value="dairy-free"> Dairy-Free
+                            </label>
+                            <label class="tag-option">
+                                <input type="checkbox" value="low-carb"> Low-Carb
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipeIngredients">Ingredients *</label>
+                        <div class="ingredients-list" id="ingredientsList">
+                            <div class="ingredient-item">
+                                <input type="text" placeholder="Ingredient name" class="ing-name">
+                                <input type="text" placeholder="Amount" class="ing-amount">
+                                <input type="text" placeholder="Unit (g, ml, etc)" class="ing-unit">
+                                <button type="button" class="remove-ingredient">&times;</button>
+                            </div>
+                        </div>
+                        <button type="button" id="addIngredient" class="btn btn-outline">
+                            <i class="fas fa-plus"></i> Add Ingredient
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipeSteps">Instructions *</label>
+                        <textarea id="recipeSteps" rows="4" placeholder="Enter step-by-step instructions"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipeNotes">Notes</label>
+                        <textarea id="recipeNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Recipe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Modal -->
+    <div id="planModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Meal Plan</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="planName" placeholder="Plan Name (e.g., Thanksgiving Week)">
+                <div class="plan-days">
+                    <h3>Select Days</h3>
+                    <div class="day-checkboxes">
+                        <label><input type="checkbox" value="monday" checked> Monday</label>
+                        <label><input type="checkbox" value="tuesday" checked> Tuesday</label>
+                        <label><input type="checkbox" value="wednesday" checked> Wednesday</label>
+                        <label><input type="checkbox" value="thursday" checked> Thursday</label>
+                        <label><input type="checkbox" value="friday" checked> Friday</label>
+                        <label><input type="checkbox" value="saturday" checked> Saturday</label>
+                        <label><input type="checkbox" value="sunday" checked> Sunday</label>
+                    </div>
+                </div>
+                <button id="savePlanBtn" class="btn btn-primary">Create Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div id="inviteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Invite Family Member</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="email" id="inviteEmail" placeholder="Email address">
+                <select id="invitePermission">
+                    <option value="view">Can view only</option>
+                    <option value="edit">Can view and edit</option>
+                </select>
+                <button id="sendInviteBtn" class="btn btn-primary">Send Invitation</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
